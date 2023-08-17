@@ -49,6 +49,10 @@ on:
     branches: ["main"]
   pull_request:
 
+env:
+  AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+  AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+
 permissions:
   contents: read
 
@@ -77,9 +81,9 @@ jobs:
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
         run: terraform init
-        env:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+        with:
+          aws_access_key: env.AWS_ACCESS_KEY
+          aws_secret_key: env.AWS_SECRET_KEY
 
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Format
